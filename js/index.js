@@ -22,10 +22,6 @@ document.addEventListener('mousemove', (e) => {
     });
 });
 
-if ('ontouchstart' in window) {
-    gsap.set('.layers__container', { rotationX: 0, rotationY: 0 });
-}
-
 if (ScrollTrigger.isTouch !== 1) {
     ScrollSmoother.create({
         wrapper: '.wrapper',
@@ -73,3 +69,49 @@ if (ScrollTrigger.isTouch !== 1) {
         }
     })
 }
+
+const initOptions = () => {
+    const gallery = document.querySelector(".gallery")
+    const galleryItems = document.querySelectorAll(".gallery-item")
+    gallery.style.setProperty('--total-items', galleryItems.length)
+
+    gallery.addEventListener("click", (e) => {
+        const clicked = e.target.closest(".gallery-item")
+        if (!clicked || clicked.classList.contains("active")) return
+
+        galleryItems.forEach(item => {
+            item.classList.remove("active")
+        })
+
+        clicked.classList.add("active")
+    })
+}
+
+document.addEventListener("DOMContentLoaded", initOptions)
+
+
+const themeToggle = document.querySelector(".theme-toggle")
+const root = document.documentElement;
+
+if (localStorage.getItem("theme") == "dark")
+    themeToggle.innerHTML = '<i class="fas fa-moon"></i>'
+else
+    themeToggle.innerHTML = '<i class="fas fa-sun"></i>'
+
+themeToggle.addEventListener("click", () => {
+    let rootStyles = getComputedStyle(document.documentElement);
+    let isDark = localStorage.getItem("theme") == "dark"
+
+    if (isDark) {
+        localStorage.setItem("theme", "light")
+        themeToggle.innerHTML = '<i class="fas fa-sun"></i>'
+        root.style.setProperty("--current-dark", rootStyles.getPropertyValue("--dark"))
+        root.style.setProperty("--current-light", rootStyles.getPropertyValue("--light"))
+    } else {
+        localStorage.setItem("theme", "dark")
+        themeToggle.innerHTML = '<i class="fas fa-moon"></i>'
+        root.style.setProperty("--current-dark", rootStyles.getPropertyValue("--light"))
+        root.style.setProperty("--current-light", rootStyles.getPropertyValue("--dark"))
+    }
+    console.log(root.style.getPropertyValue("--current-dark"))
+})

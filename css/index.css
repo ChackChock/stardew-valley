@@ -1,9 +1,13 @@
 :root {
     --primary: #4A6C3F;
-    --secondary: #E9D8A6;
+    --secondary: #ffcc32;
     --accent: #EE9B00;
+
     --dark: #2F3E46;
     --light: #F8F9FA;
+    --current-dark: #2F3E46;
+    --current-light: #F8F9FA;
+
     --glass: rgba(255, 255, 255, 0.1);
     --shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
     --index: calc(1vw + 1vh);
@@ -17,9 +21,38 @@
 }
 
 body {
-    background: var(--light);
-    color: var(--dark);
+    background: var(--current-light);
+    color: var(--current-dark);
     line-height: 1.6;
+}
+
+.theme-toggle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 5vw;
+    height: 5vh;
+    border-radius: 2.5vh;
+
+    position: fixed;
+    top: 10px;
+    right: 20px;
+    z-index: 1000;
+
+    border: 2px solid var(--current-dark);
+    background-color: rgba(255, 255, 255, 0.3);
+    transition:
+        background-color 200ms ease,
+        transform 50ms;
+}
+
+.theme-toggle:hover {
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+.theme-toggle:active {
+    transform: translateY(2px);
 }
 
 .hero {
@@ -91,22 +124,6 @@ body {
     justify-content: center;
 }
 
-/*
-.hero {
-    height: 100vh;
-    background:
-        linear-gradient(45deg, rgba(74, 108, 63, 0.7) 30%, rgba(233, 216, 166, 0.5)),
-        url('images/hero-bg.jpg') center/cover;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    transform: translateZ(calc(var(--index) * -0.1)) scale(1.1);
-    will-change: transform;
-}
-*/
-
 .about,
 .comments,
 .features {
@@ -120,20 +137,20 @@ body {
     backdrop-filter: blur(10px);
     border-radius: 20px;
     box-shadow: var(--shadow);
-    border: 2px solid var(--light);
+    border: 2px solid var(--current-light);
 }
 
 .hero h1 {
     font-size: 4.5rem;
-    background: linear-gradient(45deg, var(--light), var(--secondary));
-    -webkit-background-clip: text;
+    background: linear-gradient(45deg, var(--current-light), var(--secondary));
+    background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-bottom: 1rem;
 }
 
 .tagline {
     font-size: 1.8rem;
-    color: var(--light);
+    color: var(--current-light);
     max-width: 600px;
     margin: 0 auto;
 }
@@ -159,11 +176,47 @@ main section {
     align-items: center;
 }
 
-.about img {
+.gallery-wrapper {
     margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    border-radius: 20px;
-    transition: transform 0.3s ease;
+    height: 80vh;
+}
+
+.gallery {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    gap: 10px;
+    min-width: calc(var(--total-items) * 250px);
+}
+
+.gallery-item {
+    flex-grow: 1;
+    border-radius: 32px;
+    height: 100%;
+    transition:
+        flex-grow 750ms ease-out,
+        transform 200ms,
+        box-shadow 200ms;
+    background-position: center;
+    background-size: cover;
+}
+
+.gallery-item:not(.active):hover {
+    transform: translateY(-7px);
+    box-shadow: 0px 10px 10px -5px rgba(34, 60, 80, 0.6);
+}
+
+.gallery-item:not(.active) {
+    cursor: pointer;
+}
+
+.gallery-item.active {
+    flex-grow: var(--total-items);
+    cursor: auto;
 }
 
 .comment-cards {
@@ -174,7 +227,7 @@ main section {
 }
 
 .card {
-    background: var(--light);
+    background: var(--current-light);
     padding: 2rem;
     border-radius: 15px;
     box-shadow: var(--shadow);
@@ -195,7 +248,7 @@ main section {
 
 .feature-list li {
     padding: 2rem;
-    background: var(--light);
+    background: var(--current-light);
     border-radius: 15px;
     display: flex;
     align-items: center;
@@ -210,8 +263,8 @@ main section {
 }
 
 footer {
-    background: linear-gradient(45deg, var(--dark), var(--primary));
-    color: var(--light);
+    background: linear-gradient(45deg, var(--current-dark), var(--primary));
+    color: var(--current-light);
     padding: 4rem 0;
     margin-top: 4rem;
 }
@@ -229,7 +282,7 @@ footer {
 }
 
 .social-links a {
-    color: var(--light);
+    color: var(--current-light);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -241,8 +294,8 @@ footer {
 }
 
 .social-links a:hover {
-    background: var(--light);
-    color: var(--dark);
+    background: var(--current-light);
+    color: var(--current-dark);
 }
 
 h2 {
