@@ -115,3 +115,45 @@ themeToggle.addEventListener("click", () => {
     }
     console.log(root.style.getPropertyValue("--current-dark"))
 })
+
+
+
+
+
+const initPlayer = () => {
+    const audio = document.getElementById('audioPlayer')
+    const playButton = document.querySelector(".play-btn")
+    const vinyl = document.querySelector(".vinyl")
+    const progress = document.querySelector('.progress')
+
+    playButton.addEventListener("click", () => {
+        if (audio.paused) {
+            audio.play()
+            playButton.innerHTML = '<i class="fas fa-pause"></i>'
+            vinyl.style.animationPlayState = 'running'
+        } else {
+            audio.pause()
+            playButton.innerHTML = '<i class="fas fa-play"></i>'
+            vinyl.style.animationPlayState = 'paused'
+        }
+    })
+
+    audio.addEventListener('timeupdate', () => {
+        const progressPercent = (audio.currentTime / audio.duration) * 100
+        progress.style.width = `${progressPercent}%`
+
+        const minutes = Math.floor(audio.currentTime / 60)
+        const seconds = Math.floor(audio.currentTime % 60)
+        document.querySelector('.time').textContent =
+            `${minutes}:${seconds.toString().padStart(2, '0')} / 
+            ${Math.floor(audio.duration / 60)}:${Math.floor(audio.duration % 60).toString().padStart(2, '0')}`
+    })
+
+    document.querySelector('.progress-bar').addEventListener('click', (e) => {
+        const rect = e.target.getBoundingClientRect()
+        const pos = (e.clientX - rect.left) / rect.width
+        audio.currentTime = pos * audio.duration
+    })
+}
+
+document.addEventListener("DOMContentLoaded", initPlayer)
